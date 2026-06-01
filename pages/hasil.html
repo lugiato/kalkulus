@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hasil Rute Terpendek | DijkstraLog</title>
-  
+
   <!-- Font & Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+
   <!-- Custom Styles -->
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/hasil.css">
 </head>
+
 <body>
 
   <!-- Navigation Header -->
@@ -39,16 +41,18 @@
   <main class="container">
     <div class="page-header">
       <h1>Ringkasan Hasil Perhitungan Rute</h1>
-      <p>Berdasarkan perhitungan Algoritma Dijkstra, berikut adalah analisis rute distribusi logistik paling optimal PT X.</p>
+      <p>Berdasarkan perhitungan Algoritma Dijkstra, berikut adalah analisis rute distribusi logistik paling optimal PT
+        X.</p>
     </div>
 
     <!-- Grid Layout Hasil -->
     <div class="results-grid">
-      
+
       <!-- Kiri: Graf Rute Final -->
       <section class="svg-container-section">
         <div class="glass-card" style="padding: 1rem;">
-          <h3 style="color: white; font-size: 1.1rem; margin-bottom: 0.75rem;"><i class="fas fa-map-marked-alt text-rose-500"></i> Visualisasi Lintasan Rute Terpendek (Merah Menyala)</h3>
+          <h3 style="color: white; font-size: 1.1rem; margin-bottom: 0.75rem;"><i
+              class="fas fa-map-marked-alt text-rose-500"></i> Visualisasi Lintasan Rute Terpendek (Merah Menyala)</h3>
           <div class="svg-wrapper" style="background: rgba(15, 23, 42, 0.8);">
             <svg id="result-graph-svg" class="graph-svg" viewBox="0 0 800 480"></svg>
           </div>
@@ -57,55 +61,42 @@
 
       <!-- Kanan: Detail Statistik & Analisis -->
       <section class="details-panel">
-        
+
         <!-- Statistik Angka -->
         <div class="stats-container">
           <div class="stat-card rose">
             <i class="fas fa-road"></i>
-            <div class="stat-val">168 km</div>
+            <div class="stat-val" id="result-total-distance">0</div>
             <div class="stat-label">Total Jarak Rute</div>
           </div>
           <div class="stat-card indigo">
             <i class="fas fa-map-marker-alt"></i>
-            <div class="stat-val">7</div>
-            <div class="stat-label">Kota Terlewati</div>
+            <div class="stat-val" id="result-node-count">0</div>
+            <div class="stat-label">Node Terlewati</div>
           </div>
           <div class="stat-card teal">
             <i class="fas fa-redo"></i>
-            <div class="stat-val">7</div>
+            <div class="stat-val" id="result-iteration-count">0</div>
             <div class="stat-label">Iterasi Perhitungan</div>
           </div>
           <div class="stat-card amber">
             <i class="fas fa-percentage"></i>
-            <div class="stat-val">22.3%</div>
+            <div class="stat-val" id="result-efficiency">-</div>
             <div class="stat-label">Lebih Efisien</div>
           </div>
         </div>
 
         <!-- Rincian Jalur Terpilih -->
         <div class="glass-card route-summary-card">
-          <h3><i class="fas fa-directions text-rose-500"></i> Rute Logistik Terpilih (Optimal)</h3>
-          
-          <div class="route-flow-visual">
-            <div class="flow-node" title="PT X Bandung">0</div>
-            <div class="flow-arrow">&rarr;</div>
-            <div class="flow-node" title="Padalarang">1</div>
-            <div class="flow-arrow">&rarr;</div>
-            <div class="flow-node" title="Cikalong">2</div>
-            <div class="flow-arrow">&rarr;</div>
-            <div class="flow-node" title="Purwakarta">4</div>
-            <div class="flow-arrow">&rarr;</div>
-            <div class="flow-node" title="Karawang">6</div>
-            <div class="flow-arrow">&rarr;</div>
-            <div class="flow-node" title="Bekasi">8</div>
-            <div class="flow-arrow">&rarr;</div>
-            <div class="flow-node" title="Gudang Jakarta Timur">9</div>
-          </div>
+          <h3><i class="fas fa-directions text-rose-500"></i> Rute Terpilih (Optimal)</h3>
 
-          <div style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+          <div class="route-flow-visual" id="result-route-path"></div>
+
+          <div style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;" id="result-route-details">
             <strong>Rincian Penjumlahan Bobot Jarak:</strong><br>
-            <code style="font-size: 1rem; color: white; background: rgba(0,0,0,0.3); padding: 0.2rem 0.5rem; border-radius: 4px; display: inline-block; margin-top: 0.4rem;">
-              27.5 + 20 + 32 + 29 + 40 + 19.5 = 168 km
+            <code
+              style="font-size: 1rem; color: white; background: rgba(0,0,0,0.3); padding: 0.2rem 0.5rem; border-radius: 4px; display: inline-block; margin-top: 0.4rem;">
+              --
             </code>
           </div>
         </div>
@@ -119,9 +110,10 @@
       <div class="glass-card">
         <h3><i class="fas fa-balance-scale text-indigo-500"></i> Perbandingan dengan Jalur Alternatif</h3>
         <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
-          Berikut adalah tabel perbandingan rute logistik dari PT X Bandung ke Gudang Jakarta Timur berdasarkan beberapa jalur alternatif:
+          Berikut adalah tabel perbandingan rute logistik dari PT X Bandung ke Gudang Jakarta Timur berdasarkan beberapa
+          jalur alternatif:
         </p>
-        
+
         <div style="overflow-x: auto; border: 1px solid var(--glass-border); border-radius: 8px;">
           <table class="comp-table">
             <thead>
@@ -178,7 +170,8 @@
   <!-- Footer -->
   <footer>
     <div class="container">
-      <p>&copy; 2026 <strong>DijkstraLog</strong>. Dibuat sebagai Media Pembelajaran Interaktif Teori Graf & Algoritma.</p>
+      <p>&copy; 2026 <strong>DijkstraLog</strong>. Dibuat sebagai Media Pembelajaran Interaktif Teori Graf & Algoritma.
+      </p>
     </div>
   </footer>
 
@@ -189,4 +182,5 @@
   <script src="../js/main.js"></script>
 
 </body>
+
 </html>

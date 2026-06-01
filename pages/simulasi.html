@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulasi Dijkstra PT X | DijkstraLog</title>
-  
+
   <!-- Font & Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+
   <!-- Custom Styles -->
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/simulasi.css">
 </head>
+
 <body>
 
   <!-- Navigation Header -->
@@ -40,14 +42,30 @@
     <div class="page-header" style="margin-bottom: 2rem;">
       <h1>Simulasi Langkah demi Langkah</h1>
       <p>Simulasikan jalannya Algoritma Dijkstra dalam mencari rute distribusi optimal PT X secara interaktif.</p>
+      <div class="simulation-select-row"
+        style="margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+        <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+          <label for="graph-selector" style="font-weight: 700; color: white;">Pilih Simulasi</label>
+          <select id="graph-selector"
+            style="min-width: 240px; padding: 0.75rem 1rem; border-radius: 0.75rem; border: 1px solid rgba(148, 163, 184, 0.5); background: rgba(15, 23, 42, 0.9); color: white;">
+            <option value="logistik">Simulasi 1 - Logistik PT X</option>
+            <option value="sederhana">Simulasi 2 - Graf Sederhana</option>
+            <option value="kompleks">Simulasi 3 - Graf Kompleks</option>
+          </select>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+          <span id="simulation-graph-title" style="font-weight: 700; color: #e2e8f0;"></span>
+          <p id="graph-description" style="margin: 0; color: #94a3b8; max-width: 760px;"></p>
+        </div>
+      </div>
     </div>
 
     <!-- Dashboard Simulasi -->
     <div class="simulation-container">
-      
+
       <!-- Kolom Kiri/Tengah: Visualisasi & Kontrol -->
       <section class="simulation-main">
-        
+
         <!-- Kartu Graf Visualizer -->
         <div class="sim-svg-card">
           <!-- Judul Iterasi Saat Ini -->
@@ -57,12 +75,12 @@
               Node Aktif: -
             </div>
           </div>
-          
+
           <!-- Area Render SVG -->
           <div class="svg-wrapper">
             <svg id="simulation-svg" class="graph-svg" viewBox="0 0 800 480"></svg>
           </div>
-          
+
           <!-- Progress Bar Simulasi -->
           <div class="progress-container">
             <div id="simulation-progress" class="progress-bar"></div>
@@ -82,12 +100,14 @@
               Iterasi Berikutnya <i class="fas fa-step-forward"></i>
             </button>
           </div>
-          
+
           <div class="control-buttons">
-            <button id="btn-auto" class="btn btn-secondary btn-ctrl" style="border-color: rgba(20, 184, 166, 0.4);" title="Jalankan otomatis">
+            <button id="btn-auto" class="btn btn-secondary btn-ctrl" style="border-color: rgba(20, 184, 166, 0.4);"
+              title="Jalankan otomatis">
               <i class="fas fa-play"></i> Jalankan Otomatis
             </button>
-            <button id="btn-reset" class="btn btn-secondary btn-ctrl" style="border-color: rgba(244, 63, 94, 0.3);" title="Reset simulasi">
+            <button id="btn-reset" class="btn btn-secondary btn-ctrl" style="border-color: rgba(244, 63, 94, 0.3);"
+              title="Reset simulasi">
               <i class="fas fa-redo"></i> Reset
             </button>
           </div>
@@ -97,7 +117,7 @@
 
       <!-- Kolom Kanan: Panel Hitung Rinci -->
       <section class="simulation-sidebar">
-        
+
         <!-- Panel Perhitungan Relaksasi -->
         <div class="glass-card calc-card">
           <h3><i class="fas fa-calculator text-amber-500"></i> Panel Perhitungan</h3>
@@ -108,9 +128,11 @@
 
         <!-- Petunjuk Kunci -->
         <div class="glass-card" style="padding: 1.25rem; background: rgba(30, 41, 59, 0.3); font-size: 0.85rem;">
-          <h4 style="color: white; margin-bottom: 0.4rem;"><i class="fas fa-lightbulb text-teal-400"></i> Tips Belajar:</h4>
+          <h4 style="color: white; margin-bottom: 0.4rem;"><i class="fas fa-lightbulb text-teal-400"></i> Tips Belajar:
+          </h4>
           <p style="color: var(--text-muted); line-height: 1.5;">
-            Perhatikan perubahan nilai node di peta. Tanda asterisk (<code>*</code>) menunjukkan nilai jarak sudah bersifat <strong>Permanen</strong> dan tidak bisa diubah lagi.
+            Perhatikan perubahan nilai node di peta. Tanda asterisk (<code>*</code>) menunjukkan nilai jarak sudah
+            bersifat <strong>Permanen</strong> dan tidak bisa diubah lagi.
           </p>
         </div>
 
@@ -121,10 +143,11 @@
     <!-- Bagian Bawah: Tabel Riwayat Perubahan Jarak Node -->
     <section class="history-section" style="margin-top: 2rem;">
       <div class="glass-card" style="padding: 1.5rem;">
-        <h3 style="font-size: 1.2rem; color: white; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+        <h3
+          style="font-size: 1.2rem; color: white; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
           <i class="fas fa-history text-indigo-500"></i> Status Node & Riwayat Perubahan Nilai
         </h3>
-        
+
         <div class="history-table-container">
           <table class="history-table" id="nodes-status-table">
             <thead>
@@ -149,7 +172,8 @@
   <!-- Footer -->
   <footer>
     <div class="container">
-      <p>&copy; 2026 <strong>DijkstraLog</strong>. Dibuat sebagai Media Pembelajaran Interaktif Teori Graf & Algoritma.</p>
+      <p>&copy; 2026 <strong>DijkstraLog</strong>. Dibuat sebagai Media Pembelajaran Interaktif Teori Graf & Algoritma.
+      </p>
     </div>
   </footer>
 
@@ -161,4 +185,5 @@
   <script src="../js/main.js"></script>
 
 </body>
+
 </html>

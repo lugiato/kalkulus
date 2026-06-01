@@ -6,14 +6,24 @@
  */
 
 window.DIJKSTRA_SIMULATION = {
+  currentGraphKey: window.GRAPH_DATA.currentGraphKey,
   shortestPath: [],
   totalDistance: Infinity,
   states: [],
 
-  run: function(startNode = 0, endNode = 9) {
-    const graph = window.GRAPH_DATA.graph;
-    const nodeNames = window.GRAPH_DATA.nodeNames;
+  run: function(graphKey = window.GRAPH_DATA.currentGraphKey) {
+    window.GRAPH_DATA.setCurrentGraphKey(graphKey);
+    this.currentGraphKey = graphKey;
+    const graphData = window.GRAPH_DATA.currentGraph;
+    const graph = graphData.graph;
+    const nodeNames = graphData.nodeNames;
+    const startNode = graphData.startNode;
+    const endNode = graphData.endNode;
     const allNodeIds = Object.keys(nodeNames).map(Number).sort((a, b) => a - b);
+
+    this.states = [];
+    this.shortestPath = [];
+    this.totalDistance = Infinity;
 
     const distances = {};
     const previous = {};

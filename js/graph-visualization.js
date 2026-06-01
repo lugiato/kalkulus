@@ -21,7 +21,7 @@ window.GRAPH_VIS = {
     // Bersihkan SVG terlebih dahulu
     svg.innerHTML = "";
 
-    const data = window.GRAPH_DATA;
+    const data = window.GRAPH_DATA.currentGraph;
     const nodePositions = data.nodePositions;
     const graph = data.graph;
     const nodeNames = data.nodeNames;
@@ -317,7 +317,7 @@ window.GRAPH_VIS = {
     // Fallback: cek bobot yang cocok untuk node permanen
     const expectedDistV = state.distances[v];
     const distU = state.distances[u];
-    const weightUV = window.GRAPH_DATA.graph[u]?.[v];
+    const weightUV = window.GRAPH_DATA.currentGraph.graph[u]?.[v];
     
     if (weightUV !== undefined && distU !== Infinity && expectedDistV !== Infinity) {
       return Math.abs(distU + weightUV - expectedDistV) < 0.01;

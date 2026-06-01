@@ -9,11 +9,14 @@ window.SIMULATOR = {
   isPlaying: false,
   playInterval: null,
   autoplayDelay: 3000, // 3 detik per langkah
+  currentGraphKey: window.GRAPH_DATA.currentGraphKey,
 
   init: function() {
     this.currentStep = 0;
     this.isPlaying = false;
     this.setupEventListeners();
+    this.syncGraphSelector();
+    window.DIJKSTRA_SIMULATION.run(this.currentGraphKey);
     this.updateUI();
   },
 
@@ -23,12 +26,43 @@ window.SIMULATOR = {
     const btnPrev = document.getElementById("btn-prev");
     const btnAuto = document.getElementById("btn-auto");
     const btnReset = document.getElementById("btn-reset");
+    const graphSelector = document.getElementById("graph-selector");
 
     if (btnStart) btnStart.addEventListener("click", () => this.startSimulation());
     if (btnNext) btnNext.addEventListener("click", () => this.nextStep());
     if (btnPrev) btnPrev.addEventListener("click", () => this.prevStep());
     if (btnAuto) btnAuto.addEventListener("click", () => this.toggleAutoplay());
     if (btnReset) btnReset.addEventListener("click", () => this.resetSimulation());
+    if (graphSelector) graphSelector.addEventListener("change", (event) => this.changeGraph(event.target.value));
+  },
+
+  syncGraphSelector: function() {
+    const graphSelector = document.getElementById("graph-selector");
+    if (graphSelector) {
+      graphSelector.value = this.currentGraphKey;
+    }
+    this.updateSimulationDescription();
+  },
+
+  changeGraph: function(graphKey) {
+    if (!window.GRAPH_DATA.graphs[graphKey]) return;
+    this.currentGraphKey = graphKey;
+    window.DIJKSTRA_SIMULATION.run(graphKey);
+    this.currentStep = 0;
+    this.updateUI();
+    this.updateSimulationDescription();
+  },
+
+  updateSimulationDescription: function() {
+    const description = document.getElementById("graph-description");
+    const title = document.getElementById("simulation-graph-title");
+    const graphData = window.GRAPH_DATA.currentGraph;
+    if (title) {
+      title.textContent = graphData.title;
+    }
+    if (description) {
+      description.textContent = graphData.description;
+    }
   },
 
   startSimulation: function() {
@@ -101,6 +135,7 @@ window.SIMULATOR = {
   resetSimulation: function() {
     this.stopAutoplay();
     this.currentStep = 0;
+    window.DIJKSTRA_SIMULATION.run(this.currentGraphKey);
     this.updateUI();
   },
 
@@ -124,7 +159,7 @@ window.SIMULATOR = {
     if (stepTitle) stepTitle.textContent = currentState.title;
     
     if (activeNodeInfo) {
-      const nodeName = window.GRAPH_DATA.nodeNames[currentState.activeNode];
+      const nodeName = window.GRAPH_DATA.currentGraph.nodeNames[currentState.activeNode];
       activeNodeInfo.innerHTML = `Node Aktif: <span class="active-node-badge">${currentState.activeNode} - ${nodeName}</span>`;
     }
 
@@ -165,25 +200,25 @@ window.SIMULATOR = {
 
     tbody.innerHTML = "";
 
-    const data = window.GRAPH_DATA;
+    const data = window.GRAPH_DATA.currentGraph;
     const nodeNames = data.nodeNames;
+    const nodeIds = Object.keys(nodeNames).map(Number).sort((a, b) => a - b);
 
-    // Urutkan berdasarkan ID node
-    for (let nodeId = 0; nodeId <= 9; nodeId++) {
+    const formatDist = (value) => {
+      if (value === Infinity) return "∞";
+      if (typeof value === "number") {
+        const formatted = value.toFixed(1);
+        return formatted.endsWith(".0") ? formatted.slice(0, -2) : formatted;
+      }
+      return String(value);
+    };
+
+    nodeIds.forEach((nodeId) => {
       const name = nodeNames[nodeId];
       const isPermanent = currentState.permanentNodes.includes(nodeId);
       const rawDist = currentState.distances[nodeId];
-      const formatDist = (value) => {
-        if (value === Infinity) return "∞";
-        if (typeof value === "number") {
-          const formatted = value.toFixed(1);
-          return formatted.endsWith(".0") ? formatted.slice(0, -2) : formatted;
-        }
-        return String(value);
-      };
       const displayDist = formatDist(rawDist);
 
-      // Buat status label
       let statusLabel = "";
       let trClass = "";
 
@@ -201,13 +236,11 @@ window.SIMULATOR = {
         trClass = "row-unvisited";
       }
 
-      // Format riwayat perubahan
-      // Kita mengambil riwayat nilai node hingga langkah ini
       const historyList = currentState.history[nodeId] || ["∞"];
       const historyHtml = historyList.map((val, idx) => {
         const isLast = idx === historyList.length - 1;
-        return isLast 
-          ? `<strong class="hist-current">${val}</strong>` 
+        return isLast
+          ? `<strong class="hist-current">${val}</strong>`
           : `<span class="hist-old">${val}</span>`;
       }).join(" → ");
 
@@ -221,6 +254,6 @@ window.SIMULATOR = {
         <td class="history-cell">${historyHtml}</td>
       `;
       tbody.appendChild(tr);
-    }
+    });
   }
 };
