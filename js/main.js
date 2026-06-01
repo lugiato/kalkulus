@@ -52,9 +52,7 @@ function initStaticGraphPage() {
  */
 function showNodeDetails(nodeId) {
   const graphData = window.GRAPH_DATA.currentGraph;
-  const name = graphData.nodeNames[nodeId];
-  const graph = graphData.graph;
-
+  const name = graphData.nodeNames[nodeId] || "Tidak Diketahui";
   const nodeNameEl = document.getElementById("selected-node-name");
   const nodeConnectionsEl = document.getElementById("selected-node-connections");
 
@@ -64,17 +62,18 @@ function showNodeDetails(nodeId) {
 
   if (nodeConnectionsEl) {
     nodeConnectionsEl.innerHTML = "";
-    
+
     // Cari koneksi Keluar (Out-edges)
-    const graphData = window.GRAPH_DATA.currentGraph;
     const outEdges = graphData.graph[nodeId] || {};
     const outKeys = Object.keys(outEdges);
 
     // Cari koneksi Masuk (In-edges)
     const inEdges = [];
-    for (const fromId in graphData.graph) {
-      if (graphData.graph[fromId][nodeId] !== undefined) {
-        inEdges.push({ from: fromId, weight: graphData.graph[fromId][nodeId] });
+    for (const fromIdStr in graphData.graph) {
+      const fromId = parseInt(fromIdStr, 10);
+      const weight = graphData.graph[fromId]?.[nodeId];
+      if (weight !== undefined) {
+        inEdges.push({ from: fromId, weight });
       }
     }
 

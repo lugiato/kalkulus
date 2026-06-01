@@ -275,6 +275,14 @@
   stroke-width: 5;
 }
 
+/* Garis Edge Nilai Permanen (Hijau) */
+.edge-permanent {
+  stroke-width: 7;
+  stroke: #10b981;
+  filter: url(#neon-glow);
+  stroke-dasharray: none;
+}
+
 /* Garis Edge Rute Final */
 .edge-final {
   stroke-width: 6;
