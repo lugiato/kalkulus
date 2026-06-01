@@ -1,0 +1,158 @@
+/**
+ * hasil.css
+ * Halaman Ringkasan Hasil Rute Terpendek PT X.
+ */
+
+.results-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 992px) {
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hasil Statistik Panel */
+.stats-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(99, 102, 241, 0.2);
+  transform: translateY(-3px);
+}
+
+.stat-card i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card.indigo i { color: var(--accent-indigo); }
+.stat-card.rose i { color: var(--accent-rose); }
+.stat-card.teal i { color: var(--accent-teal); }
+.stat-card.amber i { color: var(--accent-amber); }
+
+.stat-val {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: white;
+  margin: 0.25rem 0;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Lintasan Rincian Card */
+.route-summary-card {
+  border-left: 4px solid var(--accent-rose);
+}
+
+.route-summary-card h3 {
+  font-size: 1.25rem;
+  color: white;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Aliran Jalur Kotak Visual */
+.route-flow-visual {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.flow-node {
+  background: rgba(244, 63, 94, 0.15);
+  color: var(--accent-rose);
+  border: 1px solid rgba(244, 63, 94, 0.3);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(244, 63, 94, 0.1);
+}
+
+.flow-arrow {
+  color: var(--text-muted);
+  font-weight: bold;
+}
+
+/* Tabel Perbandingan Rute */
+.comparison-section h3 {
+  font-size: 1.25rem;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.comp-table th {
+  background-color: rgba(30, 41, 59, 0.6);
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--glass-border);
+  color: white;
+  font-weight: 700;
+}
+
+.comp-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+}
+
+.comp-table tr.selected-row {
+  background: rgba(244, 63, 94, 0.06);
+}
+
+.comp-table tr.selected-row td {
+  color: white;
+}
+
+.badge-optimal {
+  background: rgba(244, 63, 94, 0.15);
+  color: var(--accent-rose);
+  border: 1px solid rgba(244, 63, 94, 0.3);
+  padding: 0.1rem 0.4rem;
+  font-weight: bold;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}

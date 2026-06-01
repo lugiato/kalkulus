@@ -1,0 +1,323 @@
+/**
+ * simulasi.css
+ * Dashboard Simulasi Interaktif Algoritma Dijkstra PT X.
+ */
+
+/* Layout Utama Dashboard */
+.simulation-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 1100px) {
+  .simulation-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Panel Visualisasi Graf (Tengah/Kiri) */
+.simulation-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sim-svg-card {
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  position: relative;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.4);
+}
+
+.progress-container {
+  width: 100%;
+  height: 6px;
+  background-color: var(--bg-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-indigo), var(--accent-teal));
+  transition: width 0.3s ease;
+}
+
+/* Panel Kontrol (Toolbar di bawah Graf) */
+.control-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-ctrl {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-ctrl:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn-playing {
+  background-color: var(--accent-rose) !important;
+  color: white !important;
+  border-color: var(--accent-rose) !important;
+}
+
+.btn-success-pulse {
+  background: var(--accent-rose) !important;
+  color: white !important;
+  animation: pulseSuccess 2s infinite;
+}
+
+@keyframes pulseSuccess {
+  0% {
+    box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(244, 63, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(244, 63, 94, 0);
+  }
+}
+
+/* Panel Status (Kanan) */
+.simulation-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Panel Perhitungan */
+.calc-card {
+  border-left: 4px solid var(--accent-amber);
+}
+
+.calc-card h3 {
+  font-size: 1.2rem;
+  color: white;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.active-node-badge {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: var(--accent-amber);
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  font-weight: 700;
+  margin-left: 0.5rem;
+  display: inline-block;
+}
+
+.log-box {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 1.25rem;
+  font-size: 0.9rem;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.log-box strong {
+  color: white;
+}
+
+/* Tabel Riwayat & Status (Bawah) */
+.history-table-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.85rem;
+}
+
+.history-table th {
+  background-color: rgba(30, 41, 59, 0.85);
+  color: white;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.history-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Status Badges */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  font-weight: 700;
+  font-size: 0.75rem;
+  border-radius: 4px;
+}
+
+.badge-unvisited {
+  background-color: var(--bg-tertiary);
+  color: var(--text-muted);
+}
+
+.badge-active {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: var(--accent-amber);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-permanent {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: var(--accent-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-discovered {
+  background-color: rgba(99, 102, 241, 0.15);
+  color: var(--accent-indigo);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+/* Row Coloring */
+.row-active {
+  background-color: rgba(245, 158, 11, 0.04);
+}
+
+.row-permanent {
+  background-color: rgba(16, 185, 129, 0.03);
+}
+
+.row-discovered {
+  background-color: rgba(99, 102, 241, 0.02);
+}
+
+/* History Column Visuals */
+.history-cell {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+}
+
+.hist-old {
+  color: var(--text-muted);
+}
+
+.hist-current {
+  color: var(--accent-teal);
+  background: rgba(20, 184, 166, 0.1);
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+}
+
+.dist-cell {
+  font-size: 0.95rem;
+  color: white;
+}
+
+/* SVG ANIMATIONS AND GRAPH STYLES */
+.node-glow {
+  stroke: inherit;
+  fill: none;
+  animation: pulseGlow 2s infinite;
+}
+
+.status-active .node-glow {
+  stroke: #fbbf24;
+}
+
+.status-final .node-glow {
+  stroke: #f43f5e;
+}
+
+/* Garis Edge yang Sedang Diproses */
+.edge-active {
+  stroke-dasharray: 8;
+  animation: dashFlow 1s linear infinite;
+  stroke-width: 5;
+}
+
+/* Garis Edge Rute Final */
+.edge-final {
+  stroke-width: 6;
+  filter: url(#neon-glow);
+  stroke-dasharray: none;
+}
+
+/* Animasi mengalir pada panah edge */
+@keyframes dashFlow {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    opacity: 0.1;
+    r: 25px;
+  }
+  50% {
+    opacity: 0.55;
+    r: 32px;
+  }
+  100% {
+    opacity: 0.1;
+    r: 25px;
+  }
+}
+
+.node-badge-bg {
+  stroke-width: 1;
+}
+
+.node-badge-bg.badge-unvisited { fill: #1e293b; stroke: #4b5563; }
+.node-badge-bg.badge-active { fill: #78350f; stroke: #fbbf24; }
+.node-badge-bg.badge-permanent { fill: #064e3b; stroke: #10b981; }
+.node-badge-bg.badge-discovered { fill: #1e1b4b; stroke: #6366f1; }
+.node-badge-bg.badge-final { fill: #881337; stroke: #f43f5e; }
+
+.node-badge-text {
+  font-size: 10px;
+  font-weight: 700;
+  fill: white;
+  text-anchor: middle;
+  pointer-events: none;
+}

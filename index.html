@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pembelajaran Dijkstra | Logistik PT X</title>
+
+  <!-- Font & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Landing Page Custom Styles -->
+  <style>
+    .hero-section {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      padding: 2rem 0 4rem;
+    }
+
+    @media (max-width: 992px) {
+      .hero-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+    }
+
+    .hero-content h1 {
+      font-size: 3.25rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #ffffff, var(--text-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-content h1 span {
+      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+      margin-top: 0.25rem;
+    }
+
+    .hero-content p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    /* Landing visual preview */
+    .hero-preview {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .preview-card {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(20, 184, 166, 0.03));
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      box-shadow: var(--shadow-neon);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    /* Target Section */
+    .tujuan-section {
+      padding: 5rem 0;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .tujuan-section h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 3rem;
+      background: linear-gradient(135deg, #ffffff, var(--text-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tujuan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .tujuan-card {
+      text-align: left;
+      padding: 2rem;
+      background: rgba(30, 41, 59, 0.4);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .tujuan-card:hover {
+      background: rgba(30, 41, 59, 0.7);
+      border-color: rgba(99, 102, 241, 0.2);
+      transform: translateY(-5px);
+    }
+
+    .tujuan-card-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--accent-indigo);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .tujuan-card:nth-child(2) .tujuan-card-icon {
+      background: rgba(20, 184, 166, 0.15);
+      color: var(--accent-teal);
+    }
+
+    .tujuan-card:nth-child(3) .tujuan-card-icon {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-amber);
+    }
+
+    .tujuan-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: white;
+    }
+
+    .tujuan-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation Header -->
+  <header>
+    <div class="container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-route"></i>
+        </div>
+        <span>DijkstraLog</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Beranda</a></li>
+          <li><a href="pages/materi.html" class="nav-link"><i class="fas fa-book"></i> Materi</a></li>
+          <li><a href="pages/graf.html" class="nav-link"><i class="fas fa-project-diagram"></i> Graf</a></li>
+          <li><a href="pages/simulasi.html" class="nav-link"><i class="fas fa-play-circle"></i> Simulasi</a></li>
+          <li><a href="pages/hasil.html" class="nav-link"><i class="fas fa-flag-checkered"></i> Hasil</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="container">
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1>Belajar Algoritma <span>Dijkstra Interaktif</span></h1>
+        <p>
+          Temukan konsep pencarian lintasan terpendek secara visual menggunakan studi kasus nyata distribusi logistik PT
+          X dari Bandung menuju Gudang Jakarta Timur. Pahami konsep graf berbobot, relaksasi node, dan perubahan
+          nilainya langkah demi langkah.
+        </p>
+        <div class="hero-buttons">
+          <a href="pages/materi.html" class="btn btn-primary">
+            Mulai Belajar <i class="fas fa-arrow-right"></i>
+          </a>
+          <a href="pages/simulasi.html" class="btn btn-secondary">
+            Simulasi Langsung <i class="fas fa-desktop"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-preview">
+        <div class="preview-card">
+          <!-- Small decorative SVG mockup of the graph path -->
+          <svg width="240" height="180" viewBox="0 0 240 180" style="overflow: visible;">
+            <circle cx="40" cy="90" r="14" fill="#f43f5e" filter="drop-shadow(0 0 8px #f43f5e)"></circle>
+            <text x="40" y="94" font-size="10" font-weight="bold" fill="white" text-anchor="middle">0</text>
+            <text x="40" y="115" font-size="9" fill="#94a3b8" text-anchor="middle">Bandung</text>
+
+            <circle cx="120" cy="50" r="14" fill="#10b981"></circle>
+            <text x="120" y="54" font-size="10" font-weight="bold" fill="white" text-anchor="middle">2</text>
+
+            <circle cx="120" cy="130" r="14" fill="#fbbf24" filter="drop-shadow(0 0 5px #fbbf24)"></circle>
+            <text x="120" y="134" font-size="10" font-weight="bold" fill="white" text-anchor="middle">3</text>
+
+            <circle cx="200" cy="90" r="14" fill="#4b5563"></circle>
+            <text x="200" y="94" font-size="10" font-weight="bold" fill="white" text-anchor="middle">9</text>
+            <text x="200" y="115" font-size="9" fill="#94a3b8" text-anchor="middle">Jakarta</text>
+
+            <!-- Lines -->
+            <line x1="52" y1="80" x2="108" y2="58" stroke="#10b981" stroke-width="2.5"></line>
+            <line x1="52" y1="100" x2="108" y2="122" stroke="#4b5563" stroke-width="2.5"></line>
+            <line x1="132" y1="58" x2="188" y2="80" stroke="#4b5563" stroke-width="2"></line>
+            <line x1="132" y1="122" x2="188" y2="100" stroke="#4b5563" stroke-width="2"></line>
+          </svg>
+          <div style="font-size: 0.95rem; font-weight: 700; color: white; margin-top: 1rem;">Visualisasi Berbasis SVG
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Real-time rendering & relaxations</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learning Goals -->
+    <section class="tujuan-section">
+      <h2>Tujuan Pembelajaran</h2>
+      <div class="tujuan-grid">
+        <div class="tujuan-card">
+          <div class="tujuan-card-icon">
+            <i class="fas fa-project-diagram"></i>
+          </div>
+          <h3>Konsep Graf Berbobot</h3>
+          <p>
+            Mempelajari bagaimana peta jaringan jalan distribusi logistik diwakili sebagai kumpulan node (kota) dan edge
+            berbobot (jarak antarkota).
+          </p>
+        </div>
+
+        <div class="tujuan-card">
+          <div class="tujuan-card-icon">
+            <i class="fas fa-compress-alt"></i>
+          </div>
+          <h3>Proses Relaksasi Node</h3>
+          <p>
+            Memahami inti dari Dijkstra, yaitu memperbarui jarak sementara jika ditemukan rute yang lebih pendek via
+            node yang baru diproses.
+          </p>
+        </div>
+
+        <div class="tujuan-card">
+          <div class="tujuan-card-icon">
+            <i class="fas fa-history"></i>
+          </div>
+          <h3>Perubahan Nilai & Riwayat</h3>
+          <p>
+            Mengamati bagaimana nilai jarak node berubah seiring iterasi, membedakan antara nilai sementara dengan nilai
+            permanen (*).
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 <strong>DijkstraLog</strong>. Dibuat sebagai Media Pembelajaran Interaktif Teori Graf & Algoritma.
+      </p>
+    </div>
+  </footer>
+
+</body>
+
+</html>

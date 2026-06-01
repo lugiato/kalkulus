@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Materi Algoritma Dijkstra | DijkstraLog</title>
+  
+  <!-- Font & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/materi.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header>
+    <div class="container">
+      <a href="../index.html" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-route"></i>
+        </div>
+        <span>DijkstraLog</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Beranda</a></li>
+          <li><a href="materi.html" class="nav-link active"><i class="fas fa-book"></i> Materi</a></li>
+          <li><a href="graf.html" class="nav-link"><i class="fas fa-project-diagram"></i> Graf</a></li>
+          <li><a href="simulasi.html" class="nav-link"><i class="fas fa-play-circle"></i> Simulasi</a></li>
+          <li><a href="hasil.html" class="nav-link"><i class="fas fa-flag-checkered"></i> Hasil</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="page-header">
+      <h1>Konsep & Cara Kerja Algoritma</h1>
+      <p>Pahami fondasi teori graf dan mekanisme pencarian lintasan terpendek sebelum memulai simulasi.</p>
+    </div>
+
+    <!-- Grid: Terminologi vs Rumus Relaksasi -->
+    <div class="materi-grid">
+      <!-- Kiri: Terminologi Graf -->
+      <section class="term-section">
+        <h2><i class="fas fa-project-diagram"></i> Terminologi Struktur Graf</h2>
+        <div class="term-list">
+          <div class="term-card">
+            <div class="term-icon"><i class="fas fa-circle"></i></div>
+            <div class="term-content">
+              <h3>Node (Simpul / Verteks)</h3>
+              <p>Mempresentasikan titik persimpangan atau kota dalam jaringan distribusi logistik. Pada studi kasus ini, terdapat 10 node (0-9) yang mewakili kota dari Bandung hingga Jakarta Timur.</p>
+            </div>
+          </div>
+
+          <div class="term-card teal">
+            <div class="term-icon"><i class="fas fa-project-diagram"></i></div>
+            <div class="term-content">
+              <h3>Edge (Sisi / Busur)</h3>
+              <p>Garis penghubung antar node yang menunjukkan jalan atau rute distribusi logistik langsung yang dapat dilewati armada kendaraan PT X.</p>
+            </div>
+          </div>
+
+          <div class="term-card amber">
+            <div class="term-icon"><i class="fas fa-weight-hanging"></i></div>
+            <div class="term-content">
+              <h3>Bobot (Weight)</h3>
+              <p>Nilai numerik yang tertera pada edge. Dalam kasus ini, bobot merepresentasikan jarak fisik dalam satuan kilometer (km) antar lokasi pengiriman.</p>
+            </div>
+          </div>
+
+          <div class="term-card rose">
+            <div class="term-icon"><i class="fas fa-road"></i></div>
+            <div class="term-content">
+              <h3>Graf Berbobot & Terarah</h3>
+              <p>Jaringan di mana setiap hubungan jalan memiliki nilai jarak dan arah aliran logistik yang spesifik (dari kota asal Bandung menuju kota tujuan Jakarta Timur).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kanan: Penjelasan Dijkstra & Relaksasi -->
+      <section class="formula-section">
+        <div class="glass-card formula-card">
+          <h2><i class="fas fa-brain"></i> Algoritma Dijkstra</h2>
+          <p style="font-size: 0.95rem; margin-top: 0.5rem; text-align: justify;">
+            Diciptakan oleh ilmuwan komputer Edsger W. Dijkstra pada tahun 1956. Algoritma ini bersifat <em>greedy</em>, yang berarti di setiap langkah ia memilih simpul dengan jarak sementara terkecil untuk dijadikan simpul permanen berikutnya.
+          </p>
+          
+          <div class="math-formula">
+            d(v) = min( d(v), d(u) + w(u, v) )
+          </div>
+
+          <div class="formula-desc">
+            <strong>Keterangan Rumus Relaksasi:</strong>
+            <ul>
+              <li><strong>d(v)</strong>: Jarak terpendek sementara dari simpul asal ke simpul <strong>v</strong>.</li>
+              <li><strong>d(u)</strong>: Jarak terpendek permanen dari simpul asal ke simpul aktif <strong>u</strong>.</li>
+              <li><strong>w(u, v)</strong>: Bobot (jarak langsung) dari simpul <strong>u</strong> ke simpul <strong>v</strong>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="glass-card" style="background: rgba(30, 41, 59, 0.25);">
+          <h3 style="color: white; margin-bottom: 0.5rem;"><i class="fas fa-info-circle text-teal-400"></i> Aturan Nilai Dijkstra</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+            • <strong>Nilai Permanen (*)</strong>: Nilai jarak minimum yang sudah final dan tidak dapat diperbarui lagi (misal: <code>27.5*</code>).<br>
+            • <strong>Nilai Sementara</strong>: Nilai jarak yang masih mungkin diperbarui (relaksasi) jika ditemukan jalur alternatif yang lebih dekat (misal: <code>90.8</code> menjadi <code>79.5</code>).
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Timeline Alur Kerja -->
+    <section class="workflow-section">
+      <h2>Alur Kerja Algoritma (Step-by-Step)</h2>
+      <div class="workflow-timeline">
+        <div class="timeline-item">
+          <div class="step-number">1</div>
+          <h4>Inisialisasi</h4>
+          <p>Beri nilai jarak 0 untuk Node Awal (PT X Bandung) dan nilai tak hingga (∞) untuk node lainnya.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="step-number">2</div>
+          <h4>Pilih Minimum</h4>
+          <p>Pilih node sementara dengan nilai terkecil, ubah statusnya menjadi Permanen (*).</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="step-number">3</div>
+          <h4>Relaksasi Tetangga</h4>
+          <p>Perbarui jarak sementara semua tetangga dari node aktif jika rute baru lebih cepat.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="step-number">4</div>
+          <h4>Selesai</h4>
+          <p>Ulangi langkah 2 & 3 sampai node tujuan (Gudang Jakarta Timur) berstatus permanen.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tombol Mulai Pembelajaran -->
+    <div class="materi-footer">
+      <a href="graf.html" class="btn btn-primary">
+        Lanjut ke Detail Peta Graf <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 <strong>DijkstraLog</strong>. Dibuat sebagai Media Pembelajaran Interaktif Teori Graf & Algoritma.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

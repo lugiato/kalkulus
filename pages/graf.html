@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peta Graf Logistik PT X | DijkstraLog</title>
+  
+  <!-- Font & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/graf.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header>
+    <div class="container">
+      <a href="../index.html" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-route"></i>
+        </div>
+        <span>DijkstraLog</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Beranda</a></li>
+          <li><a href="materi.html" class="nav-link"><i class="fas fa-book"></i> Materi</a></li>
+          <li><a href="graf.html" class="nav-link active"><i class="fas fa-project-diagram"></i> Graf</a></li>
+          <li><a href="simulasi.html" class="nav-link"><i class="fas fa-play-circle"></i> Simulasi</a></li>
+          <li><a href="hasil.html" class="nav-link"><i class="fas fa-flag-checkered"></i> Hasil</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="page-header">
+      <h1>Model Graf Distribusi Logistik PT X</h1>
+      <p>Visualisasi interaktif rute distribusi logistik dari PT X Bandung ke Gudang Jakarta Timur.</p>
+    </div>
+
+    <!-- Grid Layout -->
+    <div class="graph-page-grid">
+      
+      <!-- Kiri: Area Visualisasi SVG Graf -->
+      <section class="svg-container-section">
+        <div class="svg-wrapper">
+          <svg id="static-graph-svg" class="graph-svg" viewBox="0 0 800 480"></svg>
+        </div>
+        <p class="help-text">
+          <i class="fas fa-mouse-pointer"></i> Klik pada lingkaran kota (node) untuk melihat daftar jalur logistik keluar dan masuknya.
+        </p>
+      </section>
+
+      <!-- Kanan: Panel Info Interaktif & Legend -->
+      <section class="details-panel">
+        
+        <!-- Info Node Terpilih -->
+        <div class="glass-card node-info-card" id="node-info-panel">
+          <h3 id="selected-node-name">Pilih Node...</h3>
+          <div class="connections-box" id="selected-node-connections">
+            <p class="text-gray-400">Klik salah satu node di peta untuk melihat detail rute pengirimannya.</p>
+          </div>
+        </div>
+
+        <!-- Legend Aturan Warna -->
+        <div class="glass-card legend-card">
+          <h3>Aturan Warna Node & Garis</h3>
+          <div class="legend-list">
+            <div class="legend-item">
+              <div class="legend-color gray"></div>
+              <span>Belum dikunjungi / Belum terjangkau (Default)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color yellow"></div>
+              <span>Sedang diproses (Node Aktif saat simulasi)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color green"></div>
+              <span>Nilai permanen (*) (Rute terpendek lokal dikunci)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color red"></div>
+              <span>Jalur terpendek akhir (Rute distribusi optimal)</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- Tabel Data Node & Edge di Bawah -->
+    <section class="tables-section" style="margin-top: 4rem;">
+      <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; text-align: center; color: white;">
+        Tabel Representasi Data Graf
+      </h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        
+        <!-- Tabel Node -->
+        <div class="glass-card" style="padding: 1.5rem; overflow-x: auto;">
+          <h3 style="color: var(--accent-indigo); font-size: 1.1rem; margin-bottom: 1rem;"><i class="fas fa-city"></i> Pemetaan Node & Nama Kota</h3>
+          <table class="comp-table" style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--glass-border); color: white;">
+                <th style="padding: 0.5rem;">ID Node</th>
+                <th style="padding: 0.5rem;">Nama Lokasi / Kota</th>
+              </tr>
+            </thead>
+            <tbody style="color: var(--text-muted);">
+              <tr><td style="padding: 0.5rem; font-weight: 700; color: white;">0</td><td style="padding: 0.5rem;">PT X Bandung (Titik Distribusi Asal)</td></tr>
+              <tr><td style="padding: 0.5rem; font-weight: 700; color: white;">1</td><td style="padding: 0.5rem;">Padalarang</td></tr>
+              <tr><td style="padding: 0.5rem; font-weight: 700; color: white;">2</td><td style="padding: 0.5rem;">Cikalong</td></tr>
+              <tr><td style="padding: 0.5rem; font-weight: 700; color: white;">3</td><td style="padding: 0.5rem;">Cipatat</td></tr>
+              <tr><td style="padding: 0.5rem; font-weight: 700; color: white;">4</td><td style="padding: 0.5rem;">Purwakarta</td></tr>
+              <tr><td style="padding: 0.5rem; font-weight: 700; color: white;">5</td><td style="padding: 0.5rem;">Jonggol</td></tr>
+              <tr><td style="padding: 0.5rem; font-weight: 700; color: white;">6</td><td style="padding: 0.5rem;">Karawang</td></tr>
+              <tr><td style="padding: 0.5rem; font-weight: 700; color: white;">7</td><td style="padding: 0.5rem;">Cileungsi</td></tr>
+              <tr><td style="padding: 0.5rem; font-weight: 700; color: white;">8</td><td style="padding: 0.5rem;">Bekasi</td></tr>
+              <tr><td style="padding: 0.5rem; font-weight: 700; color: white;">9</td><td style="padding: 0.5rem;">Gudang Jakarta Timur (Tujuan Pengiriman)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tabel Jarak Edge -->
+        <div class="glass-card" style="padding: 1.5rem; overflow-x: auto;">
+          <h3 style="color: var(--accent-teal); font-size: 1.1rem; margin-bottom: 1rem;"><i class="fas fa-road"></i> Bobot Jarak Antarkota (Edge List)</h3>
+          <table class="comp-table" style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--glass-border); color: white;">
+                <th style="padding: 0.5rem;">Jalur Hubungan</th>
+                <th style="padding: 0.5rem;">Jarak Fisik (Bobot)</th>
+              </tr>
+            </thead>
+            <tbody style="color: var(--text-muted);">
+              <tr><td style="padding: 0.5rem;">PT X Bandung (0) &rarr; Padalarang (1)</td><td style="padding: 0.5rem; font-weight: 700; color: white;">27.5 km</td></tr>
+              <tr><td style="padding: 0.5rem;">Padalarang (1) &rarr; Cikalong (2)</td><td style="padding: 0.5rem; font-weight: 700; color: white;">20.0 km</td></tr>
+              <tr><td style="padding: 0.5rem;">Padalarang (1) &rarr; Cipatat (3)</td><td style="padding: 0.5rem; font-weight: 700; color: white;">18.3 km</td></tr>
+              <tr><td style="padding: 0.5rem;">Cikalong (2) &rarr; Purwakarta (4)</td><td style="padding: 0.5rem; font-weight: 700; color: white;">32.0 km</td></tr>
+              <tr><td style="padding: 0.5rem;">Cipatat (3) &rarr; Purwakarta (4)</td><td style="padding: 0.5rem; font-weight: 700; color: white;">45.0 km</td></tr>
+              <tr><td style="padding: 0.5rem;">Cipatat (3) &rarr; Jonggol (5)</td><td style="padding: 0.5rem; font-weight: 700; color: white;">79.6 km</td></tr>
+              <tr><td style="padding: 0.5rem;">Purwakarta (4) &rarr; Karawang (6)</td><td style="padding: 0.5rem; font-weight: 700; color: white;">29.0 km</td></tr>
+              <tr><td style="padding: 0.5rem;">Purwakarta (4) &rarr; Cileungsi (7)</td><td style="padding: 0.5rem; font-weight: 700; color: white;">76.0 km</td></tr>
+              <tr><td style="padding: 0.5rem;">Jonggol (5) &rarr; Cileungsi (7)</td><td style="padding: 0.5rem; font-weight: 700; color: white;">53.8 km</td></tr>
+              <tr><td style="padding: 0.5rem;">Karawang (6) &rarr; Bekasi (8)</td><td style="padding: 0.5rem; font-weight: 700; color: white;">40.0 km</td></tr>
+              <tr><td style="padding: 0.5rem;">Cileungsi (7) &rarr; Gudang Jakarta Timur (9)</td><td style="padding: 0.5rem; font-weight: 700; color: white;">37.0 km</td></tr>
+              <tr><td style="padding: 0.5rem;">Bekasi (8) &rarr; Gudang Jakarta Timur (9)</td><td style="padding: 0.5rem; font-weight: 700; color: white;">19.5 km</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Tombol Navigasi Mulai Simulasi -->
+    <div style="text-align: center; margin-top: 3.5rem;">
+      <a href="simulasi.html" class="btn btn-primary" style="padding: 0.9rem 2.2rem;">
+        Lanjut ke Simulasi Langkah-demi-Langkah <i class="fas fa-play-circle"></i>
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 <strong>DijkstraLog</strong>. Dibuat sebagai Media Pembelajaran Interaktif Teori Graf & Algoritma.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/data-graph.js"></script>
+  <script src="../js/dijkstra.js"></script>
+  <script src="../js/graph-visualization.js"></script>
+  <script src="../js/main.js"></script>
+
+</body>
+</html>

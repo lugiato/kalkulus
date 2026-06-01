@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulasi Dijkstra PT X | DijkstraLog</title>
+  
+  <!-- Font & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/simulasi.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header>
+    <div class="container">
+      <a href="../index.html" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-route"></i>
+        </div>
+        <span>DijkstraLog</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Beranda</a></li>
+          <li><a href="materi.html" class="nav-link"><i class="fas fa-book"></i> Materi</a></li>
+          <li><a href="graf.html" class="nav-link"><i class="fas fa-project-diagram"></i> Graf</a></li>
+          <li><a href="simulasi.html" class="nav-link active"><i class="fas fa-play-circle"></i> Simulasi</a></li>
+          <li><a href="hasil.html" class="nav-link"><i class="fas fa-flag-checkered"></i> Hasil</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="page-header" style="margin-bottom: 2rem;">
+      <h1>Simulasi Langkah demi Langkah</h1>
+      <p>Simulasikan jalannya Algoritma Dijkstra dalam mencari rute distribusi optimal PT X secara interaktif.</p>
+    </div>
+
+    <!-- Dashboard Simulasi -->
+    <div class="simulation-container">
+      
+      <!-- Kolom Kiri/Tengah: Visualisasi & Kontrol -->
+      <section class="simulation-main">
+        
+        <!-- Kartu Graf Visualizer -->
+        <div class="sim-svg-card">
+          <!-- Judul Iterasi Saat Ini -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <h2 id="step-title" style="font-size: 1.15rem; font-weight: 800; color: white;">Iterasi 0</h2>
+            <div id="active-node-info" style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">
+              Node Aktif: -
+            </div>
+          </div>
+          
+          <!-- Area Render SVG -->
+          <div class="svg-wrapper">
+            <svg id="simulation-svg" class="graph-svg" viewBox="0 0 800 480"></svg>
+          </div>
+          
+          <!-- Progress Bar Simulasi -->
+          <div class="progress-container">
+            <div id="simulation-progress" class="progress-bar"></div>
+          </div>
+        </div>
+
+        <!-- Toolbar Kontrol Simulasi -->
+        <div class="control-toolbar">
+          <div class="control-buttons">
+            <button id="btn-start" class="btn btn-secondary btn-ctrl" title="Mulai dari awal">
+              <i class="fas fa-fast-backward"></i> Mulai
+            </button>
+            <button id="btn-prev" class="btn btn-secondary btn-ctrl" title="Iterasi sebelumnya">
+              <i class="fas fa-step-backward"></i> Sebelumnya
+            </button>
+            <button id="btn-next" class="btn btn-primary btn-ctrl" title="Iterasi berikutnya">
+              Iterasi Berikutnya <i class="fas fa-step-forward"></i>
+            </button>
+          </div>
+          
+          <div class="control-buttons">
+            <button id="btn-auto" class="btn btn-secondary btn-ctrl" style="border-color: rgba(20, 184, 166, 0.4);" title="Jalankan otomatis">
+              <i class="fas fa-play"></i> Jalankan Otomatis
+            </button>
+            <button id="btn-reset" class="btn btn-secondary btn-ctrl" style="border-color: rgba(244, 63, 94, 0.3);" title="Reset simulasi">
+              <i class="fas fa-redo"></i> Reset
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Kolom Kanan: Panel Hitung Rinci -->
+      <section class="simulation-sidebar">
+        
+        <!-- Panel Perhitungan Relaksasi -->
+        <div class="glass-card calc-card">
+          <h3><i class="fas fa-calculator text-amber-500"></i> Panel Perhitungan</h3>
+          <div id="calculation-logs" class="log-box">
+            Keterangan perhitungan matematis relaksasi akan terupdate otomatis seiring langkah iterasi berjalan.
+          </div>
+        </div>
+
+        <!-- Petunjuk Kunci -->
+        <div class="glass-card" style="padding: 1.25rem; background: rgba(30, 41, 59, 0.3); font-size: 0.85rem;">
+          <h4 style="color: white; margin-bottom: 0.4rem;"><i class="fas fa-lightbulb text-teal-400"></i> Tips Belajar:</h4>
+          <p style="color: var(--text-muted); line-height: 1.5;">
+            Perhatikan perubahan nilai node di peta. Tanda asterisk (<code>*</code>) menunjukkan nilai jarak sudah bersifat <strong>Permanen</strong> dan tidak bisa diubah lagi.
+          </p>
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- Bagian Bawah: Tabel Riwayat Perubahan Jarak Node -->
+    <section class="history-section" style="margin-top: 2rem;">
+      <div class="glass-card" style="padding: 1.5rem;">
+        <h3 style="font-size: 1.2rem; color: white; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fas fa-history text-indigo-500"></i> Status Node & Riwayat Perubahan Nilai
+        </h3>
+        
+        <div class="history-table-container">
+          <table class="history-table" id="nodes-status-table">
+            <thead>
+              <tr>
+                <th style="width: 80px;">Node</th>
+                <th>Nama Kota / Lokasi</th>
+                <th style="width: 120px;">Jarak (km)</th>
+                <th style="width: 200px;">Status</th>
+                <th>Riwayat Perubahan Nilai</th>
+              </tr>
+            </thead>
+            <tbody id="nodes-status-tbody">
+              <!-- Baris tabel akan di-generate oleh simulation.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 <strong>DijkstraLog</strong>. Dibuat sebagai Media Pembelajaran Interaktif Teori Graf & Algoritma.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/data-graph.js"></script>
+  <script src="../js/dijkstra.js"></script>
+  <script src="../js/graph-visualization.js"></script>
+  <script src="../js/simulation.js"></script>
+  <script src="../js/main.js"></script>
+
+</body>
+</html>
